@@ -1,10 +1,10 @@
 import express from "express";
 import bodyParser from "body-parser";
-import { PORT } from "../config.js";
-import { connectDB } from "../db.js";
-import userRoute from "../routes/userRoute.js";
-import categoryRoute from "../routes/categoryRoute.js";
-import productRoute from "../routes/productRoute.js";
+import { PORT } from "../src/config.js";
+import { connectDB } from "../src/db.js";
+import userRoute from "../src/routes/userRoute.js";
+import categoryRoute from "../src/routes/categoryRoute.js";
+import productRoute from "../src/routes/productRoute.js";
 import cors from "cors"
 import cookieParser from 'cookie-parser'
 import session from "express-session"
