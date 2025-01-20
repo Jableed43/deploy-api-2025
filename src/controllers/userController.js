@@ -1,6 +1,7 @@
 import User, { rolesEnum } from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { isGoodPassword } from "../utils/validators.js";
 
 //Controladores: Actua como intermediario entre el cliente y la logica de la aplicacion. Recibe solicitudes, las procesa y devuelve la respuesta.
 //Estos controladores incluyen a los servicios
@@ -80,9 +81,21 @@ export const updateUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    const { password, ...rest } = req.body;
+
+    if(password){
+      if(!isGoodPassword(password)){
+        return res.status(400).json({
+          message: "Password must be between 6 and 12 characters, with at least one number, one upercase letter and one lowercase letter"
+        })
+      }
+      //rest son todos los datos que tiene req.body
+      rest.password = bcrypt.hashSync(password, 10)
+    }
+
     //Si utilizamos new: true, nos devolverá el registro actualizado
     // de lo contrario devuelve el registro antes de ser actualizado
-    const updatedUser = await User.findByIdAndUpdate({ _id }, req.body, {
+    const updatedUser = await User.findByIdAndUpdate({ _id }, rest, {
       new: true,
     });
 
