@@ -2,8 +2,6 @@ import mongoose from "mongoose";
 import { isGoodPassword } from "../utils/validators.js";
 import bcrypt from "bcrypt"
 
-//Faltaria encriptacion y categoria de usuario
-
 export const rolesEnum = ["ADMIN", "MERCHANT", "CLIENT"];
 
 const userSchema = new mongoose.Schema({
@@ -56,7 +54,7 @@ const userSchema = new mongoose.Schema({
         return isGoodPassword(value);
       },
       message:
-        "Password must be between 6 and 12 characters, with at least one number, one upercase letter and one lowercase letter",
+        "Password must be between 6 and 12 characters, with at least one number, one uppercase letter, and one lowercase letter",
     },
   },
 
@@ -68,17 +66,14 @@ const userSchema = new mongoose.Schema({
       },
       message: props => `${props.value} is not a valid role`,
     },
-    required: true, // Opcional: asegura que el campo sea obligatorio
-    enum: rolesEnum, // Esto asegura que el valor esté dentro de los permitidos
+    default: "CLIENT", 
+    enum: rolesEnum,
   },
 });
 
 userSchema.pre("save", function (next) {
-  //encriptamos la password antes de guardarla
-  this.password = bcrypt.hashSync(this.password, 10)
-  //Esta funcion next permite dar el proximo paso si el proceso ha salido bien
-  //de lo contrario retorna un error
-  next()
-})
+  this.password = bcrypt.hashSync(this.password, 10);
+  next();
+});
 
 export default mongoose.model("user", userSchema);

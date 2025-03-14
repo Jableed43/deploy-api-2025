@@ -8,6 +8,7 @@ import productRoute from "../src/routes/productRoute.js";
 import cors from "cors"
 import cookieParser from 'cookie-parser'
 import session from "express-session"
+import cartRouter from "../src/routes/cartRoute.js";
 
 //Ejecucion de express
 const app = express();
@@ -45,6 +46,7 @@ connectDB();
 app.use("/api/user", userRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/product", productRoute);
+app.use("/api/carts", cartRouter);
 
 //Siempre tiene que ir ultimo
 app.listen(PORT, () => {
