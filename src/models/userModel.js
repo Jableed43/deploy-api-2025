@@ -5,16 +5,7 @@ import bcrypt from "bcrypt"
 export const rolesEnum = ["ADMIN", "MERCHANT", "CLIENT"];
 
 const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    maxlength: 20,
-    minlength: 2,
-    trim: true,
-    lowercase: true,
-  },
-
-  lastName: {
+  username: {
     type: String,
     required: true,
     maxlength: 20,
@@ -32,13 +23,6 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     match: /^\S+@\S+\.\S+$/,
     unique: true,
-  },
-
-  age: {
-    type: Number,
-    required: true,
-    min: 16,
-    max: 110,
   },
 
   registrationDate: {
