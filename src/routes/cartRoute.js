@@ -4,7 +4,7 @@ import {
   getCart,
   removeProductFromCart,
   clearCart,
-  updateCart,
+  upsertCart,
   createCart,
 } from "../controllers/cartController.js";
 
@@ -13,7 +13,7 @@ const cartRouter = Router();
 cartRouter.get("/", getCarts); 
 cartRouter.get("/:userId", getCart); 
 cartRouter.post("/:userId", createCart); 
-cartRouter.put("/:userId", updateCart); 
+cartRouter.patch("/:userId", upsertCart); 
 cartRouter.delete("/:userId/product/:productId", removeProductFromCart);
 cartRouter.delete("/:userId", clearCart);
 

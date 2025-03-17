@@ -2,41 +2,35 @@ import User, { rolesEnum } from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { isGoodPassword } from "../utils/validators.js";
+import Cart from "../models/cartModel.js";
 
 //Controladores: Actua como intermediario entre el cliente y la logica de la aplicacion. Recibe solicitudes, las procesa y devuelve la respuesta.
 //Estos controladores incluyen a los servicios
 
 export const createUser = async (req, res) => {
   try {
-    //Tomar los datos enviados del post
-    //Que llegan por body
     const userData = new User(req.body);
+    const { email } = userData;
 
-    //Destructuramos y obtenemos el email
-    const { email, password } = userData;
-
-    //Validar que el email no sea repetido
     const userExist = await User.findOne({ email });
-    //En el objeto escribimos clave: valor, si la clave y el valor se llaman igual, podemos escribirlo una sola vez.
-    //Respondemos con un codigo y mensaje
+
     if (userExist) {
       return res
         .status(400)
         .json({ message: `User with email: ${email} already exists` });
     }
 
-    // const hashedPassword = bcrypt.hashSync(password, 10)
-
-    //Si el email no existe, guardamos el usuario en la db
     await userData.save();
 
-    //201 significa que se ha creado un recurso
+    const newCart = new Cart({ userId: userData._id, items: [] });
+    await newCart.save();
+
     res.status(201).json({ message: "User created" });
   } catch (error) {
-    //500 es un error generico del servidor
     return res.status(500).json({ message: "Internal server error", error });
   }
 };
+
 
 export const getUsers = async (req, res) => {
   try {

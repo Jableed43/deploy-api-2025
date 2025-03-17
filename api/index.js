@@ -15,7 +15,7 @@ const app = express();
 
 app.use(cors({
   origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', "PATCH"],
 }));
 
 //Middleware
@@ -46,7 +46,7 @@ connectDB();
 app.use("/api/user", userRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/product", productRoute);
-app.use("/api/carts", cartRouter);
+app.use("/api/cart", cartRouter);
 
 //Siempre tiene que ir ultimo
 app.listen(PORT, () => {
